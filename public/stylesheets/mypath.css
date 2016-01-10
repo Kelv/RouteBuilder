@@ -1,0 +1,73 @@
+html, body{
+  font-family: 'Droid Sans', 'Helvetica', Arial, sans-serif;
+  background-color: white;
+}
+
+.cont {
+  height: 40px;
+  width: 100%;
+  display: inline-block;
+  background-color: white;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 2px;
+  padding: auto;
+}
+#latlng{
+  color: #5AD0E5;
+  width: 100%;
+    margin: 0;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 10px;
+  text-align: center;
+  left: 2px;
+  font-size: 120%;
+}
+
+#btngroup {
+    height: 30px;
+    width: 100%;
+    margin: 0;
+    margin-top: 10px;
+    text-align: center;
+    align-content: center;
+    display: block;
+}
+button {
+    cursor: pointer;
+    color: blue;
+    height: 25px;
+    width: 30%;
+    background-color: white;
+    text-align: center;
+    font-size: 80%;
+    display: inline-block;
+    border: 0;
+}
+button:hover{
+  background-color: #5AD0E5;
+}
+button:active{
+  background-color: #668DE5;
+}
+
+#data {
+    display: block;
+    width: 100%;
+    margin: auto;
+    margin-top: 10px;
+}
+
+#map{
+  display: block;
+  margin: 0;
+  padding: 0;
+  position: absolute; /* posición absoluta a navegador */
+  top: 120px;      /* 50px debajo de borde de navegador */
+  left: 0;        /* ajusta a borde de navegador */
+  right: 0;
+  bottom: 0;
+  background: white; /* verde si no hay mapa */
+}
