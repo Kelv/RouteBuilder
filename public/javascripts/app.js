@@ -44,33 +44,43 @@ var draw_map = function(map, poly, color){
 }
  
 $(function(){
-
-    function marcasIni(pos){   //Funcion de posicionamiento de coordenadas iniciales
-        if(lat){
+    function drawRoute(map, pos){   //Funcion de posicionamiento de coordenadas iniciales            
+        var prevPos, actualPos;
+        
+        for(var i in pos){
+            actualPos = pos[i];
+            
+            if(i < 1){
+                prevPos = actualPos;
+            }
+            
             map.drawRoute({
-            origin: [lat, lng],  // origen en coordenadas anteriores
-            // destino en coordenadas del click o toque actual
-            destination: [pos.lat, pos.lng],
-            travelMode: 'driving',
-            strokeColor: '#0FFF0F',
-            strokeOpacity: 0.6,
-            strokeWeight: 5
-          });
+              origin: [prevPos.lat, prevPos.lng],  // origen en coordenadas anteriores
+              // destino en coordenadas del click o toque actual
+              destination: [actualPos.lat, actualPos.lng],
+              travelMode: 'driving',
+              strokeColor: '#000000',
+              strokeOpacity: 0.5,
+              strokeWeight: 5
+            });
+            
+            prevPos = { 
+                lat: actualPos.lat, 
+                lng: actualPos.lng 
+            } ;
+
+            positions.push({ 
+                lat: actualPos.lat, 
+                lng: actualPos.lng 
+            });
+            map.addMarker({ 
+                lat: actualPos.lat, 
+                lng: actualPos.lng 
+            });
+            lat = actualPos.lat;
+            lng = actualPos.lng;
         }
-
-        // guarda coords para marca siguiente
-        lat = pos.lat;   
-        lng = pos.lng;
-
-        map.addMarker({ lat: pos.lat, lng: pos.lng});  // pone marcador en mapa
-        };
-
-        function posEnlaces(){
-        //Esta funcion envia las posiciones que estan en localStorage
-        for (var i in positions){
-            marcasIni(positions[i]);
-        }
-    };
+    }
 
     function enlazarMarcador(e){
        // muestra ruta entre marcas anteriores y actuales
@@ -93,7 +103,7 @@ $(function(){
         lng = e.latLng.lng();
 
         positions.push({ lat: lat, lng: lng});
-        map.addMarker({ lat: lat, lng: lng});  // pone marcador en mapa
+        map.addMarker({ lat: lat, lng: lng });  // pone marcador en mapa
     };
 
     function geolocalizar(){
@@ -113,21 +123,22 @@ $(function(){
     function limpiar(){
         //Limpiar las posiciones y redibujar el mapa
         map.removePolylines();
-        map.cleanRoute();
-        map.removeMarkers(positions);
+        map.removeRoutes();
+        map.removeMarkers(map.markers);
         positions = [];
+        // Mantain data field
         document.getElementById("data").value = "";
-        geolocalizar();
     };
 
-    function trazar(){
-        positions = [positions[0], positions[positions.length-1]];
-        geolocalizar();
-    };
-    
+    function remove(){
+        pos = positions.slice(0, positions.length - 1);
+        limpiar(true);
+        drawRoute(map, pos)  
+        generateEncodedPath();
+    };  
     
     function generateEncodedPath(){
-        routes = []
+        routes = [];
         map.routes.forEach(function(e){ routes.push(e.overview_polyline); });
         if(routes.length > 0){
             document.getElementById("data").value = merge_encoding(routes);
@@ -136,8 +147,8 @@ $(function(){
 
     $("#clear").on('click', limpiar);  
     $("#clear").on('tap', limpiar);
-    $("#trazar").on('click', trazar);
-    $("#trazar").on('tap', trazar);
+    $("#delete").on('click', remove);
+    $("#delete").on('tap', remove);
     $("#generate").on('click', generateEncodedPath);
     $("#generate").on('tap', generateEncodedPath);
     geolocalizar();
