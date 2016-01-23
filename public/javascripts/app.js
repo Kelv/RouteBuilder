@@ -33,7 +33,7 @@ lng = -69.8668407;
  * @param {string} poly - Encoded polyline string
 */
 var draw_map = function(map, poly, color){
-    color = (color || '#0F0FFF');
+    color = (color || '#FF0FFF');
     var points = map.geometry.decodePath(poly).map(function(e){return [e.lat(), e.lng()];});
     map.drawPolyline({
         path: points,
@@ -59,7 +59,7 @@ $(function(){
               // destino en coordenadas del click o toque actual
               destination: [actualPos.lat, actualPos.lng],
               travelMode: 'driving',
-              strokeColor: '#000000',
+              strokeColor: '#FF0F0F',
               strokeOpacity: 0.5,
               strokeWeight: 5
             });
@@ -94,7 +94,7 @@ $(function(){
           // destino en coordenadas del click o toque actual
           destination: [e.latLng.lat(), e.latLng.lng()],
           travelMode: 'driving',
-          strokeColor: '#000000',
+          strokeColor: '#FF0F0F',
           strokeOpacity: 0.5,
           strokeWeight: 5
         });
