@@ -1,0 +1,19 @@
+    <div class="btn-toolbar" role="toolbar">
+        <div id="btngroup" class="btn-group btn-group-lg" role="group">
+            <button id="clear" class="btn btn-default">Limpiar</button>
+            <button id="delete" class="btn btn-default">Eliminar</button>
+            <button id="generate" class="btn btn-default">Generar</button>
+        </div>
+        <div class="btn-group btn-group-lg" role="group">
+            <button id="save" class="btn btn-success">Guardar</button>
+        </div>
+    </div>   
+    <input type="text" id="data" class="form-control" />
+    <div id="map" class="panel panel-default"></div>
+    
+    <form id="saveForm" method="post" action="/new">
+        <input id="dat" type="text" name="data" value="" style="display: none;" />
+        <input id="sub" type="submit" value="" style="display: none;"/>
+    </form>
+<link rel="stylesheet" type="text/css" href="stylesheets/mypath.css" />
+    <script type="text/javascript" src="javascripts/app.js"></script>

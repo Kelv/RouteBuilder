@@ -26,6 +26,16 @@ lng = -69.8668407;
     }
     return google.maps.geometry.encoding.encodePath(points);
 }
+ 
+ function getEncodedRoute(map){
+    routes = [];
+    map.routes.forEach(function(e){ routes.push(e.overview_polyline); });
+    if(routes.length > 0){
+        return merge_encoding(routes);
+    }else{
+        return "";
+    }
+ }
 
 /**
  * Draws a polyline to the specified map
@@ -41,6 +51,16 @@ var draw_map = function(map, poly, color){
         strokeOpacity: 0.6,
         strokeWeight: 5
     });
+}
+
+function saveRoute(){
+    var route = getEncodedRoute(map);
+    if(route != ""){
+        $("#dat").val(route);
+        console.log($("#dat").val());
+        $("#saveForm").submit();
+    }
+    
 }
  
 $(function(){
@@ -138,20 +158,17 @@ $(function(){
     };  
     
     function generateEncodedPath(){
-        routes = [];
-        map.routes.forEach(function(e){ routes.push(e.overview_polyline); });
-        if(routes.length > 0){
-            document.getElementById("data").value = merge_encoding(routes);
-        }
+        document.getElementById("data").value = getEncodedRoute(map);
     }
 
-    $("#clear").on('click', limpiar);  
+    $("#clear").on('click', limpiar);
     $("#clear").on('tap', limpiar);
     $("#delete").on('click', remove);
     $("#delete").on('tap', remove);
     $("#generate").on('click', generateEncodedPath);
     $("#generate").on('tap', generateEncodedPath);
+    
+    $("#save").on('click', saveRoute);
+    
     geolocalizar();
-
-  
 });
