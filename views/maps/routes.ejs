@@ -7,3 +7,8 @@
     </div>
 <% } %>
 </div>
+<script>
+    $('#options').children('li').removeClass('active');
+    var item = $('#options').children()[1];
+    $('#options').find(item).addClass('active');
+</script>

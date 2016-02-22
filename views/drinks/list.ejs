@@ -1,0 +1,42 @@
+<div class="row">
+    <div class="col-lg-6">
+        <a href="/editor" class="btn btn-success">Nuevo</a>
+    </div>
+    <div class="col-lg-6">
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Buscar...">
+          <span class="input-group-btn">
+            <span class="glyphicon glyphicon-search btn btn-default"></span>
+          </span>
+        </div><!-- /input-group -->
+    </div><!-- /.col-lg-6 -->
+</div>
+<p></p>
+<div class="list-group">
+<% var i; for(i = 0; i < drinks.length; i++){ %>
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <span class="panel-title"><%= drinks[i].name %></span>
+            <form id="deleteForm" method="post" action="/drinks/<%= drinks[i].id %>?_method=delete" class="btn btn-danger btn-sm pull-right">
+                    <span onClick="if(confirm('Seguro que desea borrar este local?')){ $('#deleteForm').submit(); }" class="glyphicon glyphicon-remove"> Eliminar</span>
+            </form>
+            <a href="/drinks/<%= drinks[i].id %>/edit" class="btn btn-default btn-sm pull-right">
+                <span class="glyphicon glyphicon-edit"> Editar</span>
+            </a>
+        </div>
+        <div class="panel-body">
+            <p><b>Teléfono:</b> <%= drinks[i].telephone %></p>
+            <p><b>Dirección:</b> <%= drinks[i].address %></p>
+            <p><b>Descripción:</b> <%= drinks[i].description %></p>
+            <p><b>Horario:</b> <%= drinks[i].schedule %></p>
+            <p><b>Latitud:</b> <%= drinks[i].latitude %></p>
+            <p><b>Longitud:</b> <%= drinks[i].longitude %></p>
+        </div>
+    </div>
+<% } %>
+</div>
+<script>
+    $('#options').children('li').removeClass('active');
+    var item = $('#options').children()[2];
+    $('#options').find(item).addClass('active');
+</script>

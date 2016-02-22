@@ -1,0 +1,19 @@
+    <span id="direction"></span><p></p>
+    <div class="btn-toolbar" role="toolbar">
+        <div class="btn-group btn-group-lg" role="group">
+            <button id="save" class="btn btn-success">Guardar</button>
+        </div>
+    </div>
+    <div id="map" class="panel panel-default"></div>
+    <form id="saveForm" method="post" action="/newDrink">
+        <input id="dat" type="text" name="data" value="" style="display: none;" />
+        <input id="dir" type="text" name="address" value="" style="display: none;" />
+        <input id="sub" type="submit" value="" style="display: none;"/>
+    </form>
+    <link rel="stylesheet" type="text/css" href="stylesheets/mypath.css" />
+    <script type="text/javascript" src="javascripts/drinksapp.js"></script>
+    <script>
+        $('#options').children('li').removeClass('active');
+        var item = $('#options').children()[2];
+        $('#options').find(item).addClass('active');
+    </script>

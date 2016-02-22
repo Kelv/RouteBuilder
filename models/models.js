@@ -26,19 +26,23 @@ var sequelize = new Sequelize(DB_name, user, pwd,
 	}
 );
 
-//var sequelize = new Sequelize(null, null, null, {dialect: "sqlite", storage: "route.sqlite"});
+// var sequelize = new Sequelize(null, null, null, {dialect: "sqlite", storage: "route.sqlite"});
 
 var route = sequelize.import(path.join(__dirname, 'route'));
+var drink = sequelize.import(path.join(__dirname, 'drink'));
 
 exports.route = route;
+exports.drink = drink;
 
 sequelize.sync().then(function(){
     route.count().then(function(count){
         if(count == 0){
-            route.create({
-                name: "J. F. Kennedy",
-                company: "Omsa"
-            }).then(function(){console.log("Base de datos inicializada");});
+            route.create().then(function(){console.log("Base de datos inicializada");});
         }
+    });
+    drink.count().then(function(count){
+    	if(count == 0){
+    		drink.create().then(function(){console.log("Base de datos inicializada");});
+    	} 
     });
 });
