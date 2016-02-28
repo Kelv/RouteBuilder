@@ -1,42 +1,58 @@
-    <div class="form-group">
-        <label for="name">Nombre de local</label>
-        <input type="text" class="form-control" id="name" name="local[name]" value="<%= local.name %>" placeholder="Nombre">
-    </div>
-    <div class="form-group">
-        <label for="telephone">Teléfono</label>
-        <input type="text" class="form-control" id="telephone" name="local[telephone]" value="<%= local.telephone %>" placeholder="Teléfono"
-               onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
-    </div>
-    <div class="form-group">
-        <label for="address">Dirección</label>
-        <input type="text" class="form-control" id="address" name="local[address]" value="<%= local.address %>" placeholder="Dirección">
-    </div>
-    <div class="form-group">
-        <label for="description">Descripción</label>
-        <input type="text" class="form-control" id="description" name="local[description]" value="<%= local.description %>" placeholder="Descripción">
-    </div>
-    <div class="form-group">
-        <label for="schedule">Horario</label>
-        <input type="text" class="form-control" id="schedule" name="local[schedule]" value="<%= local.schedule %>" placeholder="Horarios">
-    </div> 
-    <div class="form-group">
-        <label for="coord">Coordenadas</label>
-        <h5>Latitud</h5>
-        <input type="text" class="form-control" id="latitude" name="local[latitude]" value="<%= local.latitude %>" placeholder="Latitud">
-        <h5>Longitud</h5>
-        <input type="text" class="form-control" id="longitude" name="local[longitude]" value="<%= local.longitude %>" placeholder="Longitud">
-    </div>
-<div class="form-group">
-    <label for="description">Imagenes</label>
-    <input type="file" name="files[]" onchange="console.log('Se selecciono ' + this.files[0].name);" accept="image/*" multiple="" id="img" style="display: none;"/>
-    <span class="glyphicon glyphicon-plus btn btn-default btn-sm" onClick="$('#img').click();">Agregar</span>
-    <p></p>
-    <div class="row">
-      <div class="col-xs-6 col-md-3">
-        <a href="#" class="thumbnail">
-          <img src="http://www.planwallpaper.com/static/images/Winter-Tiger-Wild-Cat-Images.jpg" alt="...">
-        </a>
-      </div>
-    </div>
-</div>
-    <input id="save" type="submit" class="btn btn-success" value="Guardar">
+
+        <div class="form-group">
+            <label for="name">Nombre de local</label>
+            <input type="text" class="form-control" id="name" name="local[name]" value="<%= local.name %>" placeholder="Nombre">
+        </div>
+        <div class="form-group">
+            <label for="telephone">Teléfono</label>
+            <input type="text" class="form-control" id="telephone" name="local[telephone]" value="<%= local.telephone %>" placeholder="Teléfono"
+                   onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+        </div>
+        <div class="form-group">
+            <label for="address">Dirección</label>
+            <input type="text" class="form-control" id="address" name="local[address]" value="<%= local.address %>" placeholder="Dirección">
+        </div>
+        <div class="form-group">
+            <label for="description">Descripción</label>
+            <input type="text" class="form-control" id="description" name="local[description]" value="<%= local.description %>" placeholder="Descripción">
+        </div>
+        <div class="form-group">
+            <label for="schedule">Horario</label>
+            <input type="text" class="form-control" id="schedule" name="local[schedule]" value="<%= local.schedule %>" placeholder="Horarios">
+        </div> 
+        <div class="form-group">
+            <label for="coord">Coordenadas</label>
+            <h5>Latitud</h5>
+            <input type="text" class="form-control" id="latitude" name="local[latitude]" value="<%= local.latitude %>" placeholder="Latitud">
+            <h5>Longitud</h5>
+            <input type="text" class="form-control" id="longitude" name="local[longitude]" value="<%= local.longitude %>" placeholder="Longitud">
+        </div>
+        <fieldset class="form-group">
+            <label for="exampleInputFile">Logo</label>
+            <input id="logoFile" type="file" name="local[logo]" accept="image/*" onchange="loadImage();" class="form-control-file" id="exampleInputFile">
+            <p></p>
+            <div class="col-xs-6 col-md-3" id="logoIcon">
+            </div>
+        </fieldset>
+        <div class="form-group">
+            <label for="description">Imagenes</label>
+            <input type="file" name="files[]" onchange="console.log('Se selecciono ' + this.files[0].name);" accept="image/*" multiple="" id="img" style="display: none;" />
+            <span class="glyphicon glyphicon-plus btn btn-default btn-sm" onClick="$('#img').click();">Agregar</span>
+            <p></p>
+            <div class="row">
+              <div class="col-xs-6 col-md-3">
+                <a href="#" class="thumbnail">
+                  <img src="http://www.planwallpaper.com/static/images/Winter-Tiger-Wild-Cat-Images.jpg" alt="...">
+                </a>
+              </div>
+            </div>
+        </div>
+        <input id="save" type="submit" class="btn btn-success pull-right" value="Guardar">
+
+    <!-- <link rel="stylesheet" type="text/css" href="../stylesheets/mypath.css" /> -->
+    
+  <!--   // <script>
+    //     $('#options').children('li').removeClass('active');
+    //     var item = $('#options').children()[2];
+    //     $('#options').find(item).addClass('active');
+    // </script> -->

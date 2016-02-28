@@ -4,14 +4,17 @@
             <button id="save" class="btn btn-success">Guardar</button>
         </div>
     </div>
-    <div id="map" class="panel panel-default"></div>
-    <form id="saveForm" method="post" action="/newDrink">
-        <input id="dat" type="text" name="data" value="" style="display: none;" />
-        <input id="dir" type="text" name="address" value="" style="display: none;" />
-        <input id="sub" type="submit" value="" style="display: none;"/>
-    </form>
-    <link rel="stylesheet" type="text/css" href="stylesheets/mypath.css" />
-    <script type="text/javascript" src="javascripts/drinksapp.js"></script>
+    <div class="row">
+        <div id="map" class="col-lg-5 col-sm-5 img-fluid"></div>
+        <form id="saveForm" method="post" action="/newDrink">
+            <input id="dat" type="text" name="data" value="" style="display: none;" />
+            <input id="dir" type="text" name="address" value="" style="display: none;" />
+            <input id="sub" type="submit" value="" style="display: none;"/>
+        </form>
+
+    </div>
+    <!-- <link rel="stylesheet" type="text/css" href="../stylesheets/mypath.css" /> -->
+    <script type="text/javascript" src="../javascripts/drinksapp.js"></script>
     <script>
         $('#options').children('li').removeClass('active');
         var item = $('#options').children()[2];

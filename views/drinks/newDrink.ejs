@@ -1,3 +1,13 @@
-<form method="post" action="/saveDrink">
-    <% include _drinkForm.ejs %>
-</form>
+
+<div class="row">
+	<button class="btn btn-default pull-right" id="preset_position">Posicion actual</button>
+</div>
+<div class="row">
+	<div class="col-lg-5 col-sm-7" id="map"></div>
+	<form class="col-lg-7 col-sm-7" method="post" enctype="multipart/form-data" action="/saveDrink">
+	    <% include _drinkForm.ejs %>
+	</form>
+    <link rel="stylesheet" type="text/css" href="../stylesheets/mypath.css" />
+	<script type="text/javascript" src="../javascripts/drinksapp.js"></script>
+	<script src="../javascripts/newDrinkApp.js"></script>
+</div>

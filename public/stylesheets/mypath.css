@@ -1,10 +1,10 @@
 
-html, body{
+/*html, body{
   font-family: 'Droid Sans', 'Helvetica', Arial, sans-serif;
   background-color: white;
-}
+}*/
 
-.cont {
+/*.cont {
   height: 40px;
   width: 100%;
   display: inline-block;
@@ -14,7 +14,7 @@ html, body{
   margin-right: auto;
   border-radius: 2px;
   padding: auto;
-}
+}*/
 /*
 #latlng{
   color: #5AD0E5;
@@ -62,17 +62,20 @@ button:active{
     margin-top: 10px;
 }
 */
+#map {
+  height: 400px;
+}
 
-#map{
+/*#map{
   display: block;
   height: 76%;
-    z-index: -1;
-  position: absolute; /* posición absoluta a navegador */
-  left: 0;        /* ajusta a borde de navegador */
+  /*z-index: -1;
+  position: absolute; /* posición absoluta a navegador 
+    left: 0;         ajusta a borde de navegador 
   right: 0;
-  bottom: 0;
-  background: white; /* verde si no hay mapa */
-}
+  /*bottom: 0;
+  background: white; /* verde si no hay mapa 
+}*/
 
 /*
 nav ul {

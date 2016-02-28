@@ -1,6 +1,38 @@
 var models = require("../models/models.js");
 var express = require('express');
 var router = express.Router();
+var path = require('path');
+var fs = require('fs-extra');
+var busboy = require("connect-busboy");
+var multer = require('multer');
+
+var storage = multer.diskStorage({ //multers disk storage settings
+    destination: function (req, file, cb) {
+        cb(null, './uploads');
+    },
+    filename: function (req, file, cb) {
+        console.log(file);
+        var datetimestamp = Date.now();
+        cb(null, req.imagename + "" + file.original);
+    }
+});
+
+var upload = multer({ //multer settings
+    storage: storage
+}).single('local[logo]');
+
+function ensureExists(path, mask, cb) {
+    if (typeof mask == 'function') { // allow the `mask` parameter to be optional
+        cb = mask;
+        mask = 0777;
+    }
+    fs.mkdir(path, mask, function(err) {
+        if (err) {
+            if (err.code == 'EEXIST') cb(null); // ignore the error if the folder already exists
+            else cb(err); // something else went wrong
+        } else cb(null); // successfully created folder
+    });
+}
 
 router.param('drinkId', function(req, res, next, drinkId){
     models.drink.find({
@@ -35,7 +67,6 @@ router.get('/list', function(req, res, next){
     models.route.findAll().then(function(routes){
         res.render('maps/routes', { routes: routes });
     });
-//    res.render('routes', );
 });
 
 router.get('/editor', function(req, res, next){
@@ -49,12 +80,21 @@ router.post('/newDrink', function(req, res, next){
 });
 
 router.post('/saveDrink', function(req, res, next){
+    
+    var hname = "global";
+    req.body.hname = hname;
     var drink = models.drink.build(req.body.local);
-    drink.save({fields: ["name", "telephone", "address", "description", "schedule", "latitude", "longitude"]}).
-    then(function(){
-        res.redirect('drinks');
+    drink.save({fields: ["name", "telephone", "address", "description", "schedule", "latitude", "longitude"]});
+    
+    req.imagename = "loguito";
+    // Upload logo image
+    upload(req,res,function(err){
+        if(err){
+            console.log('error uploading file');
+        }
     });
-    console.log(drink);
+    res.redirect('drinks');
+    // console.log(drink);
 });
 
 router.get('/drinks',function(req, res, next){
@@ -91,6 +131,14 @@ router.delete('/drinks/:drinkId(\\d+)', function(req, res){
     req.drink.destroy().then(function(){
         res.redirect('/drinks');
     }).catch(function(error){next(error)});
+});
+
+router.get('/drinks/create', function(req, res, next){
+    res.render('drinks/newDrink', { local: { name: "", telephone: "", latitude: "", longitude: "", address: "" } });
+});
+
+router.get('/jun', function(req, res, next){
+    res.render('jun', {});
 });
 
 module.exports = router;

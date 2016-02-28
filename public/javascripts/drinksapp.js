@@ -12,13 +12,13 @@ function saveDrink(){
         return;
     }
     var pos = JSON.stringify({ lat: +map.markers[0].position.lat().toFixed(6), lng: +map.markers[0].position.lng().toFixed(6) });
-    if(pos != ""){
-        $("#dat").val(pos);
-        $("#dir").val(address);
-        $("#saveForm").submit();
-    }
+    // if(pos != ""){
+    //     $("#dat").val(pos);
+    //     $("#dir").val(address);
+    //     $("#saveForm").submit();
+    // }
 }
- 
+
 $(function(){
 
     function geolocalizar(){
@@ -27,35 +27,72 @@ $(function(){
               el: "#map",
               lat: lat,
               lng: lng,
-              click: putMarker,
-              tap: putMarker,
+              click: function(e){
+                putMarker(e.latLng.lat(), e.latLng.lng());
+              },
+              tap: function(e){
+                putMarker(e.latLng.lat(), e.latLng.lng());
+              },
               zoom: 12
             });
         map.cleanRoute();
     };
     
-    function putMarker(e){
+    function setPosition(lat, lng){
+        $("#latitude").val(lat);
+        $("#longitude").val(lng);
+        $.getJSON("http://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lng+"&sensor=true",
+            function(data){
+                if(data.results.length > 0){
+                    address = data.results[0].formatted_address;
+                    $("#address").val(address);
+                }
+            }
+        );
+    };
+
+    function putMarker(nlat, nlng){
         map.removeMarkers();
         var marker = {
-            lat: e.latLng.lat(),
-            lng: e.latLng.lng(),
+            lat: nlat,
+            lng: nlng,
             draggable: true,
             drag: function(e){
-                $.getJSON("http://maps.googleapis.com/maps/api/geocode/json?latlng="+e.latLng.lat()+","+e.latLng.lng()+"&sensor=true",
-                    function(data){
-                        document.getElementById("direction").innerHTML = data.results[0].formatted_address; 
-                });
+                setPosition(e.latLng.lat(), e.latLng.lng());
             }
         };
+
         map.addMarker(marker);
-        $.getJSON("http://maps.googleapis.com/maps/api/geocode/json?latlng="+e.latLng.lat()+","+e.latLng.lng()+"&sensor=true",
-            function(data){
-                document.getElementById("direction").innerHTML = data.results[0].formatted_address;
-                address = data.results[0].formatted_address;
-        });
+        setPosition(nlat, nlng);
     };
-    
-    $("#save").on('click', saveDrink);
+
+    $("#preset_position").click(function(){
+        if(navigator.geolocation) {
+            browserSupportFlag = true;
+            navigator.geolocation.getCurrentPosition(function(position) {
+                console.log(position.coords);
+                putMarker(position.coords.latitude, position.coords.longitude);
+                // initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+                map.setZoom(17);
+                map.setCenter(position.coords.latitude, position.coords.longitude);
+              }, function() {
+              handleNoGeolocation(browserSupportFlag);
+            });
+          }else {
+            browserSupportFlag = false;
+            handleNoGeolocation(browserSupportFlag);
+          }
+    });
+
+    function handleNoGeolocation(errorFlag) {
+    if (errorFlag == true) {
+      alert("Geolocation service failed.");
+      initialLocation = newyork;
+    } else {
+      alert("Your browser doesn't support geolocation. We've placed you in Siberia.");
+      initialLocation = siberia;
+    }
+  }
     
     geolocalizar();
 });
