@@ -13,7 +13,7 @@
 	<form class="col-lg-7 col-sm-7" method="post" action="/local/<%= local.id %>?_method=put">
 		<div class="form-group" id="logo">
             <label for="logo">Logo</label><br>
-			<img alt="logo" class="img-thumbnail" width="150px" height="150px" src="<%= image.path %>"><br>
+			<img alt="logo" class="img-thumbnail img-responsive" width="150px" height="150px" src="<%= image.path %>"><br>
 			<a href="/local/<%= local.id %>/logo" class="btn btn-default">Cambiar logo</a>
 		</div>
 	    <% include _localForm.ejs %>
