@@ -1,48 +1,47 @@
+// Libraries
 var models = require("../models/models.js");
+var local_controller = require("../controllers/local_controller");
 var express = require('express');
 var router = express.Router();
 var path = require('path');
-var fs = require('fs-extra');
+var fs = require('fs');
 var busboy = require("connect-busboy");
 var multer = require('multer');
 
+// Multer storage
 var storage = multer.diskStorage({ //multers disk storage settings
     destination: function (req, file, cb) {
-        cb(null, './uploads');
+        var directory = path.join(__dirname, '../public', 'images', "" + req.local.id);
+        req.image.path = "/images/" + req.local.id;
+        console.log(req.image.path);
+        fs.mkdir(directory, function(err){
+            if(err)
+                console.log("Error creating folder: " + err.toString());
+            cb(null, directory);
+        });
     },
     filename: function (req, file, cb) {
-        console.log(file);
-        var datetimestamp = Date.now();
-        cb(null, req.imagename + "" + file.original);
-    }
+        var name = "logo_"+ req.local.id + path.extname(file.originalname);
+        req.image.path += "/"+ name;
+        cb(null, name);
+    } 
 });
 
+// Function to upload image files
 var upload = multer({ //multer settings
     storage: storage
-}).single('local[logo]');
-
-function ensureExists(path, mask, cb) {
-    if (typeof mask == 'function') { // allow the `mask` parameter to be optional
-        cb = mask;
-        mask = 0777;
-    }
-    fs.mkdir(path, mask, function(err) {
-        if (err) {
-            if (err.code == 'EEXIST') cb(null); // ignore the error if the folder already exists
-            else cb(err); // something else went wrong
-        } else cb(null); // successfully created folder
-    });
-}
+}).single('logo');
 
 router.param('drinkId', function(req, res, next, drinkId){
-    models.drink.find({
+    models.local.find({
         where: { id: Number(drinkId)}
-    }).then(function(drink){
-        if(drink){
-            req.drink = drink;
+    }).then(function(local){
+        if(local){
+            req.local = local;
             next();
         }
     }).catch(function(error){next(error)});
+
 });
 
 /* GET home page. */
@@ -70,75 +69,17 @@ router.get('/list', function(req, res, next){
 });
 
 router.get('/editor', function(req, res, next){
-    res.render('drinks', {});
+    res.render('local', {});
 });
 
-router.post('/newDrink', function(req, res, next){
-    var coords = JSON.parse(req.body.data);
-    var dir = req.body.address;
-    res.render('drinks/newDrink', { local: { name: "", telephone: "", latitude: coords.lat, longitude: coords.lng, address: dir} });
-});
-
-router.post('/saveDrink', function(req, res, next){
-    
-    var hname = "global";
-    req.body.hname = hname;
-    var drink = models.drink.build(req.body.local);
-    drink.save({fields: ["name", "telephone", "address", "description", "schedule", "latitude", "longitude"]});
-    
-    req.imagename = "loguito";
-    // Upload logo image
-    upload(req,res,function(err){
-        if(err){
-            console.log('error uploading file');
-        }
-    });
-    res.redirect('drinks');
-    // console.log(drink);
-});
-
-router.get('/drinks',function(req, res, next){
-    models.drink.findAll().then(function(drinks){
-        res.render('drinks/list', { drinks: drinks });
-    });
-});
-
-router.get('/drinks/:drinkId(\\d+)/edit',function(req, res, next){
-    models.drink.findAll().then(function(drinks){
-       res.render('drinks/editDrink', { local: req.drink });
-    });
-});
-
-router.put('/drinks/:drinkId(\\d+)', function(req, res){
-    console.log(req.drink);
-    req.drink.name = req.body.local.name;
-    req.drink.telephone = req.body.local.telephone;
-    req.drink.address = req.body.local.address;
-    req.drink.description = req.body.local.description;
-    req.drink.schedule = req.body.local.schedule;
-    req.drink.latitude = req.body.local.latitude;
-    req.drink.longitude = req.body.local.longitude;
-    
-    var drink = req.drink;
-    
-    drink.save({fields: ["name", "telephone", "address", "description", "schedule", "latitude", "longitude"]})
-    .then(function(){
-        res.redirect('/drinks');
-    });
-});
-
-router.delete('/drinks/:drinkId(\\d+)', function(req, res){
-    req.drink.destroy().then(function(){
-        res.redirect('/drinks');
-    }).catch(function(error){next(error)});
-});
-
-router.get('/drinks/create', function(req, res, next){
-    res.render('drinks/newDrink', { local: { name: "", telephone: "", latitude: "", longitude: "", address: "" } });
-});
-
-router.get('/jun', function(req, res, next){
-    res.render('jun', {});
-});
+router.get('/local/:drinkId(\\d+)/logo',    local_controller.logo_load);
+router.put('/uploadLogo/:drinkId(\\d+)',    local_controller.logo_upload);
+router.get('/local/:drinkId(\\d+)/edit',    local_controller.edit);
+router.get('/local/new',                    local_controller.new);
+router.get('/local',                        local_controller.index);
+router.put('/local/:drinkId(\\d+)',         local_controller.update);
+router.delete('/local/:drinkId(\\d+)',      local_controller.delete);
+router.post('/local/create',                local_controller.create);
+router.put('/uploadLogo/:drinkId(\\d+)',    local_controller.logo_edit);
 
 module.exports = router;

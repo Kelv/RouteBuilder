@@ -1,7 +1,7 @@
 var models = require("../models/models.js");
 
 module.exports = function(sequelize, DataTypes){
-	return sequelize.define('drink',
+	return sequelize.define('local',
 		{ 
             name: {
                 type: DataTypes.STRING,
@@ -19,6 +19,11 @@ module.exports = function(sequelize, DataTypes){
                 type: DataTypes.FLOAT,
                 validate: { notEmpty: {msg: "--> Este campo no puede estar en blanco"}}
             },
-            rating: DataTypes.FLOAT
+            rating: DataTypes.FLOAT,
+            local_type: {
+                type: DataTypes.STRING,
+                validate: { notEmpty: {msg: "--> Este campo no puede estar en blanco"}},
+                defaultValue: ""
+            }
 		});
 }

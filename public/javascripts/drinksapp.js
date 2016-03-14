@@ -4,19 +4,17 @@ var positions = [];
 
 // Center points
 lat = 18.4953778;
-lng = -69.8668407; 
+lng = -69.8668407;
 
 function saveDrink(){
     if(map.markers.length < 1) {
         alert("Nada para guardar");
         return;
     }
-    var pos = JSON.stringify({ lat: +map.markers[0].position.lat().toFixed(6), lng: +map.markers[0].position.lng().toFixed(6) });
-    // if(pos != ""){
-    //     $("#dat").val(pos);
-    //     $("#dir").val(address);
-    //     $("#saveForm").submit();
-    // }
+    var pos = JSON.stringify({ 
+      lat: +map.markers[0].position.lat().toFixed(6), 
+      lng: +map.markers[0].position.lng().toFixed(6)
+    });
 }
 
 $(function(){
@@ -64,6 +62,8 @@ $(function(){
 
         map.addMarker(marker);
         setPosition(nlat, nlng);
+        map.setZoom(17);
+        map.setCenter(nlat, nlng);
     };
 
     $("#preset_position").click(function(){
@@ -95,4 +95,7 @@ $(function(){
   }
     
     geolocalizar();
+    if(position){
+      putMarker(position.lat, position.lng);
+    }
 });

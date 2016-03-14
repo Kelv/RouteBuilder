@@ -8,6 +8,7 @@ var partials = require("express-partials");
 var methodOverride = require('method-override');
 var busboy = require('connect-busboy');
 var multer = require('multer');
+var fs = require('fs');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -21,7 +22,7 @@ app.set('view engine', 'ejs');
 app.use(partials());
 
 // uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(busboy());
 app.use(bodyParser.json());
@@ -29,7 +30,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/local', express.static(path.join(__dirname, 'public')));
+app.use('/images', express.static(path.join(__dirname, 'public', 'images')));
 app.use(bodyParser({uploadDir: "../temp"}));
+// app.use(multer({ dest: './uploads/'}));
 
 app.use('/', routes);
 app.use('/users', users);
@@ -38,6 +42,11 @@ app.use('/users', users);
     res.header("Access-Control-Allow-Origin", "http://localhost");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
+});
+
+fs.mkdir(path.join(__dirname, 'public', 'uploading'), function(err){
+  console.log(err);
+  console.log("Error creating uploads folder");
 });
 
 /** Serving from the same express Server

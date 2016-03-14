@@ -29,20 +29,13 @@ var Sequelize = require('sequelize');
 var sequelize = new Sequelize(null, null, null, {dialect: "sqlite", storage: "route.sqlite"});
 
 var route = sequelize.import(path.join(__dirname, 'route'));
-var drink = sequelize.import(path.join(__dirname, 'drink'));
+var local = sequelize.import(path.join(__dirname, 'local'));
+var valoration = sequelize.import(path.join(__dirname, 'valoration'));
+var image = sequelize.import(path.join(__dirname, 'image'));
 
 exports.route = route;
-exports.drink = drink;
+exports.local = local;
+exports.valoration = valoration;
+exports.image = image;
 
-sequelize.sync().then(function(){
-    route.count().then(function(count){
-        if(count == 0){
-            route.create().then(function(){console.log("Base de datos inicializada");});
-        }
-    });
-    drink.count().then(function(count){
-    	if(count == 0){
-    		drink.create().then(function(){console.log("Base de datos inicializada");});
-    	} 
-    });
-});
+sequelize.sync();
