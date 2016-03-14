@@ -1,4 +1,31 @@
 var models = require('../models/models.js');
+var multer = require('multer');
+var fs = require('fs');
+var path = require('path');
+
+// Multer storage
+var storage = multer.diskStorage({ //multers disk storage settings
+    destination: function (req, file, cb) {
+        var directory = path.join(__dirname, '../public', 'images', "" + req.local.id);
+        req.image.path = "/images/" + req.local.id;
+        console.log(req.image.path);
+        fs.mkdir(directory, function(err){
+            if(err)
+                console.log("Error creating folder: " + err.toString());
+            cb(null, directory);
+        });
+    },
+    filename: function (req, file, cb) {
+        var name = "logo_"+ req.local.id + path.extname(file.originalname);
+        req.image.path += "/"+ name;
+        cb(null, name);
+    } 
+});
+
+// Function to upload image files
+var upload = multer({ //multer settings
+    storage: storage
+}).single('logo');
 
 exports.new = function(req, res, next){
     res.render('local/new', { local: { name: "", telephone: "", latitude: "", longitude: "", address: "" } });

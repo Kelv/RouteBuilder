@@ -44,7 +44,7 @@ app.use('/users', users);
     next();
 });
 
-fs.mkdir(path.join(__dirname, 'public', 'uploading'), function(err){
+fs.mkdir(path.join(__dirname, 'public', 'images'), function(err){
   console.log(err);
   console.log("Error creating uploads folder");
 });
