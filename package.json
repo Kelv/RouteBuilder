@@ -1,11 +1,17 @@
 {
   "name": "routebuilder",
   "version": "0.0.1",
+  "description": "App for party spot creation",
+  "repository": "https://github.com/Kelv/RouteBuilder",
   "description": "Route creation application",
   "private": true,
   "author": "Kelvin Rodriguez",
+  "license": "Apache Version 2.0",
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+	"monitor": "nodemon app.js",
+    "deploy": "gcloud preview app deploy app.yaml",
+    "lint": "jshint --exclude-path=../.gitignore ."
   },
   "dependencies": {
     "body-parser": "~1.13.2",
@@ -15,6 +21,7 @@
     "debug": "~2.2.0",
     "ejs": "^2.3.4",
     "express": "~4.13.1",
+    "gcloud": "^0.29.0",
     "express-partials": "^0.3.0",
     "fs-extra": "^0.26.5",
     "method-override": "^2.3.5",
@@ -26,5 +33,8 @@
     "sequelize": "^3.18.0",
     "serve-favicon": "~2.3.0",
     "sqlite3": "^3.1.1"
+  },
+  "engines": {
+    "node": ">=0.12.7"
   }
 }

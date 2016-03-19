@@ -1,0 +1,1 @@
+This tool can be used to create locals
